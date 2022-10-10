@@ -4,5 +4,4 @@ select
 from 
 "SNOWFLAKE_SAMPLE_DATA"."TPCH_SF1"."ORDERS"
 group by order_date
--- added cooment
--- added one more comment
+--add comments
