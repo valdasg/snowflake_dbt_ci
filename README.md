@@ -1,15 +1,58 @@
-Welcome to your new dbt project!
+# DBT / Snowflake CI project
 
-### Using the starter project
+This is a simple DBT/Snowflake integrated CI project to start DBT job on pull request. 
+Prequisites:
+- DBT account and local instalation
+- Snowflake account
+- Git account and local instalation
 
-Try running the following commands:
-- dbt run
-- dbt test
+## DBT instalation
+Sign up for free DBT account.
+To install DBT locally run:
+'''
+pip install \
+ dbt-core \
+ dbt-snowflake
+'''
+
+First command installs DBT core components and second one Snowflake driver needed to be able to use Snowflake as compute engine.
+
+Important: you can run pip on virtual environment, in this case do not forget to modify dbt_project.yaml to point to correct dbt profiles file location. 
+
+After instalation is complete run:
+'''
+dbt init dbt_sbow_dev
+'''
+
+dbt init initialises default dbt folder structure. After it's completed navigate to folder dirrectory and modify dbt_project.yml file as needed.
+
+## Connect to Snowflake
+Create users, roles and warehouses according needs. Update profiles.yml file in ~/.dbt adding:
+'''
+config:
+  send_anonymous_usage_stats: false
+dbt_sbow_dev:
+  outputs:
+    dev:
+      account: <snowflake account>
+      database: <snowflake database>
+      password: <password>
+      role: <role>
+      schema: <schema>
+      threads: 1
+      type: snowflake
+      user: <user>
+      warehouse: <warehouse>
+  target: dev
+'''
+Test connection running:
+'''
+dbt debug
+'''
+## DBT Cloud setup
+Create DBT job, connect it with git app and web hook to run job on pull request.
+
+### Finally
+Create git branch, create your models, tests, etc and create a pull request. DBT job will run on merging a pull request.
 
 
-### Resources:
-- Learn more about dbt [in the docs](https://docs.getdbt.com/docs/introduction)
-- Check out [Discourse](https://discourse.getdbt.com/) for commonly asked questions and answers
-- Join the [chat](https://community.getdbt.com/) on Slack for live discussions and support
-- Find [dbt events](https://events.getdbt.com) near you
-- Check out [the blog](https://blog.getdbt.com/) for the latest news on dbt's development and best practices
